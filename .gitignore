@@ -1,0 +1,42 @@
+.cache/
+
+
+# NPM
+# ==== #
+.npm/testing.ts
+
+
+# RELEASES
+# ======== #
+@releases/**/*
+!@releases/**/*.zip
+
+
+# PUBLIC
+# ====== #
+
+
+# SRC
+# === #
+
+
+# ROOT
+# ==== #
+.gitcommit.md
+TODO
+
+
+# JUNK
+# ==== #
+._*
+.DS_Store
+.smbdelete*
+
+tsconfig.old.json
+tsconfig.old.**.json
+
+**.css.map
+**.js.map
+
+node_modules/
+package-lock.json
