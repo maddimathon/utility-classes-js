@@ -1,0 +1,58 @@
+{
+    "Insert @since to docblock": {
+        "scope": "javascript,typescript",
+        "prefix": "@since",
+        "body": "@since {{PKG_VERSION}}"
+    },
+
+    "Add full project header": {
+        "scope": "javascript,typescript",
+        "prefix": [ "header", "start" ],
+        "body": [
+            "/**",
+            " * ${1:This file does stuff.}",
+            " * ",
+            " * @package @maddimathon/utility-classes@{{CURRENT_VERSION}}",
+            " * @author Maddi Mathon (www.maddimathon.com)",
+            " * @link {{CURRENT_URL}}",
+            " * ",
+            " * @license MIT",
+            " * ",
+            " * @since {{PKG_VERSION}}",
+            " */",
+            "/*!",
+            " * @package @maddimathon/utility-classes@{{CURRENT_VERSION}}",
+            " * @link {{CURRENT_URL}}",
+            " * @license MIT",
+            " */$0"
+        ]
+    },
+    
+    "Add simple file header (npm/node.js)": {
+        "scope": "javascript,typescript",
+        "prefix": "node",
+        "body": [
+            "#!/usr/bin/env ${1:tsx}",
+            "'use strict';",
+            "/**",
+            " * ${2:This file does stuff.}",
+            " * ",
+            " * @package @maddimathon/utility-classes@{{CURRENT_VERSION}}",
+            " * @license MIT",
+            " * ",
+            " * @since {{PKG_VERSION}}",
+            " */",
+            "import argsFn from 'minimist';",
+            "const args = argsFn( process.argv.slice( 2 ) );",
+            "",
+            "// import NodeFs from 'node:fs';",
+            "// import NodePath from 'node:path';",
+            "",
+            "// import { globSync } from 'glob';",
+            "",
+            "// import pkg from '../package.json';",
+            "",
+            "$0"
+        ]
+    },
+}

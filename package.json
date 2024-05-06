@@ -1,0 +1,61 @@
+{
+    "name": "@maddimathon/utility-classes",
+    "version": "0.1.0",
+    "author": "Maddi Mathon (https://www.maddimathon.com)",
+    "description": "Classes of utility functions to use/extend in other projects.",
+    "homepage": "https://github.com/maddimathon/utility-classes-js",
+    "config": {
+        "title": "Maddi’s Utility Classes"
+    },
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "files": [ "./dist" ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/maddimathon/utility-classes-js.git"
+    },
+    "bugs": {
+        "url": "https://github.com/maddimathon/utility-classes-js/issues"
+    },
+    "scripts": {
+        
+        "commit": "git commit -a --message=\"[${npm_package_version}-dev] $(date +%Y-%m-%d@%H:%M)\"",
+
+        "test-ts": "tsx .scripts/testing.ts",
+        "tsconfig": "tsx .scripts/tsconfig.ts",
+
+        "compile": "tsc --project tsconfig.json",
+        "watch": "tsc --project tsconfig.json --watch",
+
+        "build": "run-s --silent compile && tsx .scripts/build.ts",
+
+        "prepackage": "run-s --silent prepackage:*",
+            "prepackage:notice": "echo \"packaging ${npm_package_name}@${npm_package_version}...\" && sleep 10",
+            "prepackage:build": "npm run --silent build",
+
+        "package": "run-s --silent package:*",
+            "package:commit": "git commit --allow-empty -m '[pre-package] ${npm_package_version}'",
+
+            "package:zip": "npm run --silent package:zip:notice package:zip:new",
+                "package:zip:notice": "echo \"zipping ${npm_package_name}@${npm_package_version//\\./-}.zip\"",
+                "package:zip:new": "cd ${npm_package_config_pkgdir} && zip -r ${npm_package_name}@${npm_package_version//\\./-}.zip ${npm_package_name}@${npm_package_version//\\./-} -x \"._**\" -x \"**/._**\"",
+
+            "package:notice": "echo \"done packaging ${npm_package_name}@${npm_package_version}\"",
+
+        "publish": "npm publish"
+    },
+    "dependencies": {
+        "@tsconfig/node20": "~20.1.2",
+        "@tsconfig/recommended": "~1.0.3",
+        "@types/node": "~20.11.5",
+        "glob": "~10.3.10",
+        "minimist": "~1.2.8",
+        "yaml": "~2.3.4"
+    },
+    "devDependencies": {
+        "npm-run-all": "~4.1.5",
+        "tsx": "~4.7.0",
+        "typescript": "~5.3.3"
+    }
+}

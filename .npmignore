@@ -1,21 +1,20 @@
 .cache/
-.scripts/testing.ts
+.scripts/
+.vscode/
+@releases/
+src/
 
-@releases/**/*
-!@releases/**/*.zip
-
-
-# DIST
-# ==== #
-
-
-# SRC
-# === #
+dist/**/*
+!dist/index.js
+!dist/index.d.ts
 
 
 # ROOT
 # ==== #
+.prettierignore
+.prettierrc.json
 TODO
+tsconfig.json
 
 
 # JUNK
