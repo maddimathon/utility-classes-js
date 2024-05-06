@@ -24,7 +24,7 @@
     },
     "scripts": {
         
-        "commit": "git commit -a --message=\"[${npm_package_version}-dev] $(date +%Y-%m-%d@%H:%M)\"",
+        "commit": "git tag -f ${npm_package_version}-dev && git commit -a --message=\"[${npm_package_version}-dev] $(date +%Y-%m-%d@%H:%M)\"",
         "release-filename": "echo \"maddimathon-utility-classes@${npm_package_version//\\./-}\"",
 
         "test-ts": "tsx .scripts/testing.ts",
