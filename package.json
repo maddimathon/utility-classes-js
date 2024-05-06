@@ -1,6 +1,6 @@
 {
     "name": "@maddimathon/utility-classes",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "author": "Maddi Mathon (https://www.maddimathon.com)",
     "description": "Classes of utility functions to use/extend in other projects.",
     "homepage": "https://github.com/maddimathon/utility-classes-js",
@@ -22,9 +22,6 @@
     "bugs": {
         "url": "https://github.com/maddimathon/utility-classes-js/issues"
     },
-    "publishConfig": {
-        "@maddimathon:registry": "https://npm.pkg.github.com"
-    },
     "scripts": {
         
         "commit": "git commit -a --message=\"[${npm_package_version}-dev] $(date +%Y-%m-%d@%H:%M)\"",
@@ -39,11 +36,11 @@
         "build": "npm run compile",
 
         "prepackage": "run-s prepackage:*",
-            "prepackage:notice": "echo \"packaging $( npm run --silent release-filename )...\" && sleep 10",
+            "prepackage:notice": "echo \"packaging ${npm_package_name}@${npm_package_version}...\" && sleep 10",
             "prepackage:build": "npm run build",
 
         "package": "run-s package:*",
-            "package:commit": "git tag -f ${npm_package_version} && git commit --allow-empty -m \"[pre-package] ${npm_package_version}\"",
+            "package:commit": "git tag -f ${npm_package_version} && git commit --allow-empty -m \"PKG: [${npm_package_version}] $(date +%Y-%m-%d@%H:%M)\"",
 
             "package:zip": "run-s package:zip:*",
                 "package:zip:notice": "echo \"zipping $( npm run --silent release-filename ).zip to ${npm_package_config_pkgdir}\"",
@@ -51,7 +48,7 @@
 
             "package:notice": "echo \"done packaging ${npm_package_name}@${npm_package_version}\"",
 
-        "release": "gh release create ${npm_package_version} \"${npm_package_config_pkgdir}/$( npm run --silent release-filename ).zip\" --draft --title \"${npm_package_version}\""
+        "release": "git push --tags && gh release create ${npm_package_version} \"${npm_package_config_pkgdir}/$( npm run --silent release-filename ).zip#${npm_package_name}@${npm_package_version}\" --draft --generate-notes"
     },
     "dependencies": {
         "@tsconfig/node20": "~20.1.2",
