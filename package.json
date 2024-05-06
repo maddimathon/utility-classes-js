@@ -1,16 +1,20 @@
 {
     "name": "@maddimathon/utility-classes",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "author": "Maddi Mathon (https://www.maddimathon.com)",
     "description": "Classes of utility functions to use/extend in other projects.",
     "homepage": "https://github.com/maddimathon/utility-classes-js",
     "config": {
+        "pkgdir": "@releases",
         "title": "Maddi’s Utility Classes"
     },
     "type": "module",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
-    "files": [ "./dist" ],
+    "files": [
+        "./dist/index.js",
+        "./dist/index.d.ts"
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/maddimathon/utility-classes-js.git"
@@ -18,9 +22,13 @@
     "bugs": {
         "url": "https://github.com/maddimathon/utility-classes-js/issues"
     },
+    "publishConfig": {
+        "@maddimathon:registry": "https://npm.pkg.github.com"
+    },
     "scripts": {
         
         "commit": "git commit -a --message=\"[${npm_package_version}-dev] $(date +%Y-%m-%d@%H:%M)\"",
+        "release-filename": "echo \"maddimathon-utility-classes@${npm_package_version//\\./-}\"",
 
         "test-ts": "tsx .scripts/testing.ts",
         "tsconfig": "tsx .scripts/tsconfig.ts",
@@ -28,22 +36,22 @@
         "compile": "tsc --project tsconfig.json",
         "watch": "tsc --project tsconfig.json --watch",
 
-        "build": "run-s --silent compile && tsx .scripts/build.ts",
+        "build": "npm run compile",
 
-        "prepackage": "run-s --silent prepackage:*",
-            "prepackage:notice": "echo \"packaging ${npm_package_name}@${npm_package_version}...\" && sleep 10",
-            "prepackage:build": "npm run --silent build",
+        "prepackage": "run-s prepackage:*",
+            "prepackage:notice": "echo \"packaging $( npm run --silent release-filename )...\" && sleep 10",
+            "prepackage:build": "npm run build",
 
-        "package": "run-s --silent package:*",
-            "package:commit": "git commit --allow-empty -m '[pre-package] ${npm_package_version}'",
+        "package": "run-s package:*",
+            "package:commit": "git tag -f ${npm_package_version} && git commit --allow-empty -m \"[pre-package] ${npm_package_version}\"",
 
-            "package:zip": "npm run --silent package:zip:notice package:zip:new",
-                "package:zip:notice": "echo \"zipping ${npm_package_name}@${npm_package_version//\\./-}.zip\"",
-                "package:zip:new": "cd ${npm_package_config_pkgdir} && zip -r ${npm_package_name}@${npm_package_version//\\./-}.zip ${npm_package_name}@${npm_package_version//\\./-} -x \"._**\" -x \"**/._**\"",
+            "package:zip": "run-s package:zip:*",
+                "package:zip:notice": "echo \"zipping $( npm run --silent release-filename ).zip to ${npm_package_config_pkgdir}\"",
+                "package:zip:new": "thisdir=${PWD##*/} && thisdir=${thisdir:-/} && filename=$( npm run --silent release-filename ) && cd .. && zip -vr \"${thisdir}/${npm_package_config_pkgdir}/${filename}.zip\" \"${thisdir}\" -x@${thisdir}/.zipignore",
 
             "package:notice": "echo \"done packaging ${npm_package_name}@${npm_package_version}\"",
 
-        "publish": "npm publish"
+        "release": "gh release create ${npm_package_version} \"${npm_package_config_pkgdir}/$( npm run --silent release-filename ).zip\" --draft --title \"${npm_package_version}\""
     },
     "dependencies": {
         "@tsconfig/node20": "~20.1.2",

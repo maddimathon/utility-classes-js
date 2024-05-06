@@ -30,7 +30,7 @@
     
     "Add simple file header (npm/node.js)": {
         "scope": "javascript,typescript",
-        "prefix": "node",
+        "prefix": [ "node", "npm" ],
         "body": [
             "#!/usr/bin/env ${1:tsx}",
             "'use strict';",

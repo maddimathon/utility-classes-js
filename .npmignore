@@ -1,12 +1,8 @@
-.cache/
-.scripts/
-.vscode/
-@releases/
-src/
-
-dist/**/*
-!dist/index.js
-!dist/index.d.ts
+.cache/**/*
+.scripts/**/*
+.vscode/**/*
+@releases/**/*
+src/**/*
 
 
 # ROOT
@@ -19,11 +15,13 @@ tsconfig.json
 
 # JUNK
 # ==== #
-._*
-.DS_Store
-.smbdelete**
+**/._*
+**/._**/*
+**/.DS_Store
+**/.smbdelete*
+**/.smbdelete**/*
 
-tsconfig.old.json
-tsconfig.old.**.json
+**/tsconfig.old.json
+**/tsconfig.old.**.json
 
-node_modules/
+**/node_modules/**/*
