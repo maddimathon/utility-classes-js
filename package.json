@@ -21,7 +21,7 @@
     },
     "scripts": {
         
-        "commit": "git tag -f ${npm_package_version}-dev && git commit -a --message=\"[${npm_package_version}-dev] $(date +%Y-%m-%d@%H:%M)\"",
+        "commit": "git commit -a --message=\"[${npm_package_version}-dev] $(date +%Y-%m-%d@%H:%M)\" && git tag -f ${npm_package_version}-dev",
         "release-filename": "echo \"maddimathon-utility-classes@${npm_package_version//\\./-}\"",
 
         "test-ts": "tsx .scripts/testing.ts",
@@ -37,7 +37,7 @@
             "prepackage:build": "npm run build",
 
         "package": "run-s package:*",
-            "package:commit": "git tag -f ${npm_package_version} && git commit --allow-empty -m \"PKG: [${npm_package_version}] $(date +%Y-%m-%d@%H:%M)\"",
+            "package:commit": "git commit --allow-empty -m \"PKG: [${npm_package_version}] $(date +%Y-%m-%d@%H:%M)\" && git tag -f ${npm_package_version} -a ''",
 
             "package:zip": "run-s package:zip:*",
                 "package:zip:notice": "echo \"zipping $( npm run --silent release-filename ).zip to ${npm_package_config_pkgdir}\"",
