@@ -1,36 +1,36 @@
 {
     "name": "@maddimathon/utility-classes",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "author": "Maddi Mathon (https://www.maddimathon.com)",
     "description": "Classes of utility functions to use/extend in other projects.",
-    "homepage": "https://github.com/maddimathon/utility-classes-js",
     "config": {
         "pkgdir": "@releases",
         "title": "Maddi’s Utility Classes"
     },
-    "type": "module",
+    "bugs": {
+        "url": "https://github.com/maddimathon/utility-classes-js/issues"
+    },
+    "files": [ "./dist" ],
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
-    "files": [ "./dist" ],
     "repository": {
         "type": "git",
         "url": "https://github.com/maddimathon/utility-classes-js.git"
     },
-    "bugs": {
-        "url": "https://github.com/maddimathon/utility-classes-js/issues"
-    },
+    "type": "module",
     "scripts": {
         
         "commit": "git commit -a --message=\"[post-${npm_package_version}] $(date +%Y-%m-%d@%H:%M)\"",
         "release-filename": "echo \"maddimathon-utility-classes@${npm_package_version//\\./-}\"",
 
         "test-ts": "tsx .scripts/testing.ts",
-        "tsconfig": "tsx .scripts/tsconfig.ts",
+        
+        "setup": "tsx .scripts/boiler-files.ts",
 
         "compile": "tsc --project tsconfig.json",
         "watch": "tsc --project tsconfig.json --watch",
 
-        "build": "npm run compile",
+        "build": "run-s setup compile",
 
         "prepackage": "run-s prepackage:*",
             "prepackage:notice": "echo \"packaging ${npm_package_name}@${npm_package_version}...\" && sleep 10",
@@ -45,18 +45,22 @@
 
             "package:notice": "echo \"done packaging ${npm_package_name}@${npm_package_version}\"",
 
-        "release": "git push --tags && gh release create ${npm_package_version} \"${npm_package_config_pkgdir}/$( npm run --silent release-filename ).zip#${npm_package_name}@${npm_package_version}\" --draft --generate-notes"
+        "release": "git push --tags && gh release create ${npm_package_version} \"${npm_package_config_pkgdir}/$( npm run --silent release-filename ).zip#${npm_package_name}@${npm_package_version}\" --generate-notes"
     },
     "dependencies": {
         "@tsconfig/node20": "~20.1.2",
         "@tsconfig/recommended": "~1.0.3",
         "@types/node": "~20.11.5",
         "glob": "~10.3.10",
+        "jest": "~29.7.0",
         "minimist": "~1.2.8",
         "yaml": "~2.3.4"
     },
     "devDependencies": {
+        "@types/jest": "~29.5.12",
+        "jest": "~29.7.0",
         "npm-run-all": "~4.1.5",
+        "ts-jest": "~29.1.2",
         "tsx": "~4.7.0",
         "typescript": "~5.3.3"
     }

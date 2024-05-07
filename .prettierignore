@@ -6,13 +6,3 @@ package-lock.json
 **/package-lock.json
 node_modules
 **/node_modules
-
-*.scss
-**/*.scss
-*.html
-**/*.html
-*.php
-**/*.php
-
-src/docs/**.scss
-src/scss/**.scss

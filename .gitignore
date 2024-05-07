@@ -1,4 +1,5 @@
 .cache/
+.scripts/.test
 .scripts/testing.ts
 
 @releases/**/*

@@ -1,12 +1,12 @@
 /**
  * Exports all the utilities.
- * 
+ *
  * @package @maddimathon/utility-classes@{{CURRENT_VERSION}}
  * @author Maddi Mathon (www.maddimathon.com)
  * @link {{CURRENT_URL}}
- * 
+ *
  * @license MIT
- * 
+ *
  * @since {{PKG_VERSION}}
  */
 /*!
@@ -15,18 +15,13 @@
  * @license MIT
  */
 
-export function testFunction(): string {
-    return "Hello, I am a test function.  Goodbye.";
-}
+export type {
+    AbstractCoreOpts,
+} from './classes/abstracts/AbstractCore.js';
 
-// export type {
-//     AbstractCoreOpts,
-// } from './classes/abstracts/AbstractCore.js';
-
-// export {
-//     AbstractCore,
-//     AbstractCoreOptsDefault,
-// } from './classes/abstracts/AbstractCore.js';
+export {
+    AbstractCore,
+} from './classes/abstracts/AbstractCore.js';
 
 // export type {
 //     VariableInspectorOpts,
@@ -44,15 +39,14 @@ export function testFunction(): string {
 //     Functions,
 // } from './classes/Functions.js';
 
-// export type {
-//     BoilerFileMethod,
-//     BoilerFileMethodKey,
-//     BoilerFilesOpts,
-// } from './classes/BoilerFiles.js';
+export type {
+    BoilerFileMethodKey,
+    BoilerFilesOpts,
+} from './classes/BoilerFiles.js';
 
-// export {
-//     BoilerFiles,
-// } from './classes/BoilerFiles.js';
+export {
+    BoilerFiles,
+} from './classes/BoilerFiles.js';
 
 // export type {
 //     MsgObj,
@@ -73,10 +67,10 @@ export function testFunction(): string {
 //     NodeFunctions,
 // } from './classes/npm/NodeFunctions.js';
 
-// export {
-//     PackageJson,
-//     TsConfig,
-// } from './types/jsonSchemas.js';
+export type {
+    PackageJson,
+    TsConfig,
+} from './types/jsonSchemas.js';
 
 // export type {
 //     CountryCode,
