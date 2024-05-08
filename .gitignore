@@ -1,6 +1,7 @@
 .cache/
 .scripts/.test
-.scripts/testing.ts
+.scripts/tests/.files
+.scripts/tests/.files-copy
 
 @releases/**/*
 !@releases/**/*.zip

@@ -1,10 +1,10 @@
 /*!
- * @package @maddimathon/utility-classes@{{CURRENT_VERSION}}
- * @link {{CURRENT_URL}}
+ * @package @maddimathon/utility-classes@1.0.0
+ * @link https://github.com/maddimathon/utility-classes-js
  * @license MIT
  */
 ;
-const AbstractCoreOptsDefault = {
+export const AbstractCoreOptsDefault = {
     tabWidth: 4,
     tabCharacter: ' ',
     ansiEscape: '\x1b',
@@ -22,76 +22,74 @@ const AbstractCoreOptsDefault = {
         black: "2;51;51;51",
     },
 };
-class AbstractCore {
-    _getOpts(opts) {
+export class AbstractCore {
+    _getOpts( opts ) {
         var _a;
-        return this.parseArgs((_a = this.opts) !== null && _a !== void 0 ? _a : this.optsDefault, opts, true);
+        return this.parseArgs( ( _a = this.opts ) !== null && _a !== void 0 ? _a : this.optsDefault, opts, true );
     }
-    constructor(opts = {}) {
-        this.opts = this._getOpts(opts);
+    constructor ( opts = {} ) {
+        this.opts = this._getOpts( opts );
     }
-    typeOf(variable) {
-        if (variable === null) {
+    typeOf( variable ) {
+        if ( variable === null ) {
             return 'null';
         }
-        if (variable === undefined) {
+        if ( variable === undefined ) {
             return 'undefined';
         }
         const type_of = typeof variable;
-        switch (type_of) {
+        switch ( type_of ) {
             case 'function':
                 return typeof variable.prototype === 'undefined'
                     ? 'function'
                     : 'class';
             case 'number':
-                if (isNaN(variable)) {
+                if ( isNaN( variable ) ) {
                     return 'NaN';
                 }
                 break;
         }
         return type_of;
     }
-    toString() { return JSON.stringify(this, null, 4); }
-    valueOf() { return this; }
+    toString() { return JSON.stringify( this, null, 4 ); }
     get tab() {
-        return this.opts.tabCharacter.repeat(this.opts.tabWidth);
+        return this.opts.tabCharacter.repeat( this.opts.tabWidth );
     }
-    escRegExp(convertMe) {
-        return convertMe.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    escRegExp( convertMe ) {
+        return convertMe.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' );
     }
-    escRegExpReplace(convertMe) {
-        return convertMe.replace(/\$/g, '$$$$');
+    escRegExpReplace( convertMe ) {
+        return convertMe.replace( /\$/g, '$$$$' );
     }
-    _combineArgs(defaults, inputs, recursive, includeAllInputKeys) {
+    _combineArgs( defaults, inputs, recursive, includeAllInputKeys ) {
         var _a;
-        if (typeof inputs !== 'object' || !inputs) {
-            return Object.assign({}, defaults);
+        if ( typeof inputs !== 'object' || !inputs ) {
+            return Object.assign( {}, defaults );
         }
-        let result = Object.assign({}, defaults);
-        for (const _key of Object.getOwnPropertyNames(inputs)) {
-            const key = _key;
-            if (includeAllInputKeys == false
-                && typeof defaults[key] === 'undefined') {
+        let result = Object.assign( {}, defaults );
+        const inputKeys = Object.keys( inputs );
+        for ( const key of inputKeys ) {
+            if ( !includeAllInputKeys
+                && typeof defaults[ key ] === 'undefined' ) {
                 continue;
             }
-            if (recursive
-                && typeof defaults[key] === 'object'
-                && typeof inputs[key] === 'object'
-                && !Array.isArray(defaults[key])
-                && !Array.isArray(inputs[key])) {
-                result[key] = this._combineArgs(defaults[key], inputs[key], recursive, includeAllInputKeys);
+            if ( recursive
+                && typeof defaults[ key ] === 'object'
+                && typeof inputs[ key ] === 'object'
+                && !Array.isArray( defaults[ key ] )
+                && !Array.isArray( inputs[ key ] ) ) {
+                result[ key ] = this._combineArgs( defaults[ key ], inputs[ key ], recursive, includeAllInputKeys );
             }
             else {
-                result[key] = ((_a = inputs[key]) !== null && _a !== void 0 ? _a : defaults[key]);
+                result[ key ] = ( ( _a = inputs[ key ] ) !== null && _a !== void 0 ? _a : defaults[ key ] );
             }
         }
         return result;
     }
-    mergeArgs(defaults, inputs, recursive = false) {
-        return this._combineArgs(defaults, inputs, recursive, true);
+    mergeArgs( defaults, inputs, recursive = false ) {
+        return this._combineArgs( defaults, inputs, recursive, true );
     }
-    parseArgs(defaults, inputs, recursive = false) {
-        return this._combineArgs(defaults, inputs, recursive, false);
+    parseArgs( defaults, inputs, recursive = false ) {
+        return this._combineArgs( defaults, inputs, recursive, false );
     }
 }
-export { AbstractCoreOptsDefault, AbstractCore, };

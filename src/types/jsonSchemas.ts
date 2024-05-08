@@ -8,7 +8,7 @@
  *
  * @license MIT
  *
- * @since {{PKG_VERSION}}
+ * @since 1.0.0
  */
 /*!
  * @package @maddimathon/utility-classes@{{CURRENT_VERSION}}

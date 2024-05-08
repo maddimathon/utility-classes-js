@@ -8,7 +8,7 @@
  *
  * @license MIT
  *
- * @since {{PKG_VERSION}}
+ * @since 1.0.0
  */
 /*!
  * @package @maddimathon/utility-classes@{{CURRENT_VERSION}}
@@ -16,12 +16,21 @@
  * @license MIT
  */
 
-interface AbstractCoreOpts {
+
+
+/** # TYPES
+ ** ======================================================================== **/
+
+export interface AbstractCoreOpts {
 
     tabWidth: number;
     tabCharacter: string;
 
     ansiEscape: string;
+
+    /**
+     * Colour codes that I like for each colour.
+     */
     ansiColours: {
         red: string,
         orange: string,
@@ -38,7 +47,12 @@ interface AbstractCoreOpts {
     };
 };
 
-const AbstractCoreOptsDefault = {
+
+
+/** # VARIABLES
+ ** ======================================================================== **/
+
+export const AbstractCoreOptsDefault: AbstractCoreOpts = {
     tabWidth: 4,
     tabCharacter: ' ',
     ansiEscape: '\x1b',
@@ -58,41 +72,41 @@ const AbstractCoreOptsDefault = {
     },
 };
 
-abstract class AbstractCore<Opts extends AbstractCoreOpts> {
+
+
+/** # CLASS
+ ** ======================================================================== **/
+
+export abstract class AbstractCore<Opts extends AbstractCoreOpts> {
 
     public abstract get optsDefault(): Opts;
 
-    /** 
-     * @member opts  
-     * @protected
-     */
-    protected opts: Opts;
+    public opts: Opts;
 
     /**
-     * @method _getOpts  New version of this obj’s opts with given overrides.
+     * New version of this obj’s opts with given overrides.
      */
     protected _getOpts( opts: Partial<Opts> ): Opts {
         return this.parseArgs( this.opts ?? this.optsDefault, opts, true );
     }
 
 
-    /**
-     * CONSTRUCTOR
-     */
+
+    /** CONSTRUCTOR
+     ** ==================================================================== **/
+
     constructor ( opts: Partial<Opts> = {} ) {
         this.opts = this._getOpts( opts );
     }
 
 
 
-    /** # BUILT-IN ALIASES
+    /** BUILT-IN ALIASES
      ** Aliases for built-in functions/expressions.
      ** ==================================================================== **/
 
     /**
-     * @method typeOf  Alias for `typeof variable`, but with added options: 
-     *                 "class", "NaN", "null".
-     * @return  The type slug.
+     * Alias for `typeof` keyword, but with added options: "class", "NaN", "null".
      */
     protected typeOf(
         variable: any,
@@ -126,59 +140,44 @@ abstract class AbstractCore<Opts extends AbstractCoreOpts> {
 
 
 
-    /** # OVERRIDING BUILT-IN METHODS
+    /** OVERRIDING BUILT-IN METHODS
      ** ==================================================================== **/
 
     /**
-     * @method toString()  Overwrites the default function to return a string 
-     *                     representation of this object.
-     * 
+     * Overwrites the default function to return a string representation of this
+     * object.
+     *
      * @override  Default value in `Object.prototype`.
      * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
      */
     public toString(): string { return JSON.stringify( this, null, 4 ); }
 
-    /**
-     * @method valueOf()  Overwrites the default value of this object.
-     * 
-     * @override  Default value in `Object.prototype`.
-     * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/valueOf
-     */
-    public valueOf(): any { return this as typeof this; }
 
 
-
-    /** # PRE-FORMATTED STRINGS
+    /** PRE-FORMATTED STRINGS
      ** ==================================================================== **/
 
-    /** @member tab  To use for tabs/indents based on this.opts values. */
+    /** 
+     * To use for tabs/indents based on this.opts values.
+     */
     protected get tab(): string {
         return this.opts.tabCharacter.repeat( this.opts.tabWidth );
     }
 
 
 
-    /** # REGULAR EXPRESSIONS
+    /** REGULAR EXPRESSIONS
      ** ==================================================================== **/
 
     /**
-     * @function escRegExp  Escapes a string for use in a regular expression.
-     * 
-     * @param convertMe  String to escape.
-     * 
-     * @return  Escaped value to use to construct a RegExp.
+     * Escapes a string for use in a regular expression.
      */
     protected escRegExp( convertMe: string ): string {
         return convertMe.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' );
     }
 
     /**
-     * @function escRegExpReplace  Escapes a string for use as a replacement for 
-     *                             a regular expression.
-     * 
-     * @param convertMe  String to escape.
-     * 
-     * @return  Escaped value to use to construct a RegExp.
+     * Escapes a string for use as a replacement for a regular expression.
      */
     protected escRegExpReplace( convertMe: string ): string {
         return convertMe.replace( /\$/g, '$$$$' );
@@ -186,31 +185,26 @@ abstract class AbstractCore<Opts extends AbstractCoreOpts> {
 
 
 
-    /** # WORKING WITH OPTION OBJECTS
+    /** WORKING WITH OPTION OBJECTS
      ** ==================================================================== **/
 
     /**
-     * @method _combineArgs()  Returns an updated version of `defaults` based on
-     *                         the parse contents of `inputs`. Useful for 
-     *                         parsing objects passed to functions with extra, 
-     *                         optional options.
+     * Returns an updated version of `defaults` based on the parse contents of
+     * `inputs`. Useful for parsing objects passed to functions with extra,
+     * optional options.
+     *
+     * Just here as the core function for both `this.parseArgs` and
+     * `this.mergeArgs`, use those public functions externally instead.
      *
      * @param defaults             The default values (backups).
      * @param inputs               The overriding values (to change).
-     * @param recursive            Optional. Whether to parse/merge the object 
+     * @param recursive            Optional. Whether to parse/merge the object
      *                             recursively. Default false.
-     * @param includeAllInputKeys  Whether to include all keys of `inputs`, 
+     * @param includeAllInputKeys  Whether to include all keys of `inputs`,
      *                             regardless of if they’re a key of `defaults`.
      *
-     * @return  Resulting object with all the `defaults` keys with either 
+     * @return  Resulting object with all the `defaults` keys with either
      *          default values or input values, as appropriate.
-     * 
-     * @protected  Just here as the core function for both `this.parseArgs` 
-     *             and `this.mergeArgs`, use those public functions externally 
-     *             instead.
-     * 
-     * @see this.mergeArgs()  Is an alias for this (_combineArgs) function.
-     * @see this.parseArgs()  Is an alias for this (_combineArgs) function.
      */
     protected _combineArgs<D, I extends Partial<D>>(
         defaults: D,
@@ -222,11 +216,14 @@ abstract class AbstractCore<Opts extends AbstractCoreOpts> {
 
         let result: D = { ...defaults };
 
-        for ( const _key of Object.getOwnPropertyNames( inputs ) ) {
-            const key = _key as keyof D;
+        const inputKeys = Object.keys( inputs ) as ( keyof D )[];
 
-            if ( includeAllInputKeys == false
-                && typeof defaults[ key ] === 'undefined' ) { continue; }
+        for ( const key of inputKeys ) {
+
+            if (
+                !includeAllInputKeys
+                && typeof defaults[ key ] === 'undefined'
+            ) { continue; }
 
             if (
                 recursive
@@ -235,6 +232,7 @@ abstract class AbstractCore<Opts extends AbstractCoreOpts> {
                 && !Array.isArray( defaults[ key ] )
                 && !Array.isArray( inputs[ key ] )
             ) {
+
                 // get deep
                 result[ key ] = this._combineArgs(
                     defaults[ key ],
@@ -243,6 +241,7 @@ abstract class AbstractCore<Opts extends AbstractCoreOpts> {
                     includeAllInputKeys,
                 );
             } else {
+
                 // single-level
                 result[ key ] = ( inputs[ key ] ?? defaults[ key ] ) as D[ keyof D ];
             }
@@ -251,9 +250,9 @@ abstract class AbstractCore<Opts extends AbstractCoreOpts> {
     }
 
     /**
-     * @method mergeArgs  Alias for `this._combineArgs()` with 
-     *                      `includeAllInputKeys = true`.
-     * @see this._combineArgs()  Contains the actual logic and param defs.
+     * Alias for `this._combineArgs()` with `includeAllInputKeys = true`.
+     * 
+     * @see this._combineArgs()  Contains the actual logic.
      */
     protected mergeArgs<D, I extends Partial<D>>(
         defaults: D,
@@ -264,9 +263,9 @@ abstract class AbstractCore<Opts extends AbstractCoreOpts> {
     }
 
     /**
-     * @method parseArgs  Alias for `this._combineArgs()` with 
-     *                      `includeAllInputKeys = false`.
-     * @see this._combineArgs()  Contains the actual logic and param defs.
+     * Alias for `this._combineArgs()` with `includeAllInputKeys = false`.
+     *
+     * @see this._combineArgs()  Contains the actual logic.
      */
     protected parseArgs<D, I extends Partial<D>>(
         defaults: D,
@@ -276,17 +275,3 @@ abstract class AbstractCore<Opts extends AbstractCoreOpts> {
         return this._combineArgs( defaults, inputs, recursive, false );
     }
 }
-
-
-/** 
- * EXPORT
- */
-
-export type {
-    AbstractCoreOpts,
-};
-
-export {
-    AbstractCoreOptsDefault,
-    AbstractCore,
-};

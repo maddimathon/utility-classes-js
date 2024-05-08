@@ -1,6 +1,6 @@
 /*!
- * @package @maddimathon/utility-classes@{{CURRENT_VERSION}}
- * @link {{CURRENT_URL}}
+ * @package @maddimathon/utility-classes@1.0.0
+ * @link https://github.com/maddimathon/utility-classes-js
  * @license MIT
  */
 interface PackageJson {
@@ -19,23 +19,23 @@ interface PackageJson {
         email?: string;
         url?: string;
     };
-    contributors?: PackageJson['author'][];
+    contributors?: PackageJson[ 'author' ][];
     funding?: string | {
         type: string;
         url: string;
-    } | (string | {
+    } | ( string | {
         type: string;
         url: string;
-    })[];
+    } )[];
     files?: string[];
     main?: string;
     browser?: string;
     bin?: string | {
-        [key: string]: string;
+        [ key: string ]: string;
     };
     man?: string | string[];
     directories?: {
-        [key: string]: string;
+        [ key: string ]: string;
     };
     repository?: string | {
         type: string;
@@ -43,40 +43,40 @@ interface PackageJson {
         directory?: string;
     };
     scripts?: {
-        [key: string]: string;
+        [ key: string ]: string;
     };
     config?: {
-        [key: number | string]: any;
+        [ key: number | string ]: any;
     };
     dependencies?: {
-        [key: string]: string;
+        [ key: string ]: string;
     };
     devDependencies?: {
-        [key: string]: string;
+        [ key: string ]: string;
     };
     peerDependencies?: {
-        [key: string]: string;
+        [ key: string ]: string;
     };
     peerDependenciesMeta?: {
-        [key: string]: {
-            [key: string]: string;
+        [ key: string ]: {
+            [ key: string ]: string;
         };
     };
     bundleDependencies?: string[];
     optionalDependencies?: {
-        [key: string]: string;
+        [ key: string ]: string;
     };
     overrides?: {
-        [key: string]: string | PackageJson['overrides'];
+        [ key: string ]: string | PackageJson[ 'overrides' ];
     };
     engines?: {
-        [key: string]: string;
+        [ key: string ]: string;
     };
     os?: string[];
     cpu?: string[];
     private?: boolean;
     publishConfig?: {
-        [key: string]: boolean | number | string;
+        [ key: string ]: boolean | number | string;
     };
     workspaces?: string[];
 }
@@ -115,7 +115,7 @@ interface TsConfig {
         moduleSuffixes?: string[];
         noResolve?: boolean;
         paths?: {
-            [key: string]: string[] | string[];
+            [ key: string ]: string[] | string[];
         };
         resolveJsonModule?: boolean;
         resolvePackageJsonExports?: boolean;
@@ -170,7 +170,7 @@ interface TsConfig {
         jsxFactory?: string;
         jsxFragmentFactory?: string;
         jsxImportSource?: string;
-        lib?: "ES5" | "ES2015" | "ES6" | "ES2016" | "ES7" | "ES2017" | "ES2018" | "ES2019" | "ES2020" | "ES2021" | "ES2022" | "ESNext" | "DOM" | "WebWorker" | "ScriptHost" | ("ES5" | "ES2015" | "ES6" | "ES2016" | "ES7" | "ES2017" | "ES2018" | "ES2019" | "ES2020" | "ES2021" | "ES2022" | "ESNext" | "DOM" | "WebWorker" | "ScriptHost")[];
+        lib?: "ES5" | "ES2015" | "ES6" | "ES2016" | "ES7" | "ES2017" | "ES2018" | "ES2019" | "ES2020" | "ES2021" | "ES2022" | "ESNext" | "DOM" | "WebWorker" | "ScriptHost" | ( "ES5" | "ES2015" | "ES6" | "ES2016" | "ES7" | "ES2017" | "ES2018" | "ES2019" | "ES2020" | "ES2021" | "ES2022" | "ESNext" | "DOM" | "WebWorker" | "ScriptHost" )[];
         moduleDetection?: "legacy" | "auto" | "forced";
         noLib?: boolean;
         reactNamespace?: string;

@@ -8,7 +8,7 @@
  *
  * @license MIT
  *
- * @since {{PKG_VERSION}}
+ * @since 1.0.0
  */
 /*!
  * @package @maddimathon/utility-classes@{{CURRENT_VERSION}}
@@ -16,18 +16,24 @@
  * @license MIT
  */
 
-import type { Config as JestConfig } from 'jest';
-
 import type { AbstractCoreOpts } from './abstracts/AbstractCore.js';
 import { AbstractCore, AbstractCoreOptsDefault } from './abstracts/AbstractCore.js';
 
 import type { TsConfig } from '../types/jsonSchemas.js';
 
-interface BoilerFilesOpts extends AbstractCoreOpts {
+
+
+/** # TYPES
+ ** ======================================================================== **/
+
+export type BoilerFileMethodKey = keyof BoilerFiles & ( "tsConfig" );
+
+
+/** ## Opts Interface ==================================== **/
+
+export interface BoilerFilesOpts extends AbstractCoreOpts {
     prettyPrint: boolean,
-    jest: {
-        default: JestConfig,
-    },
+
     tsConfig: {
         default: Partial<TsConfig>;
         presets: {
@@ -40,24 +46,24 @@ interface BoilerFilesOpts extends AbstractCoreOpts {
     };
 };
 
-type BoilerFileMethodKey = keyof BoilerFiles & ( "jest" | "tsConfig" );
+
+
+/** # CLASS
+ ** ======================================================================== **/
 
 /**
- * Generates the contents for a variety of config files.
+ * Generates the contents for a variety of files based on defaults.
  */
-class BoilerFiles extends AbstractCore<BoilerFilesOpts> {
+export class BoilerFiles extends AbstractCore<BoilerFilesOpts> {
 
     /** 
-     * @member _obj  Use the functions without configuration (alternative to 
-     *               making all methods static).
-     * @private
-     * @static
+     * Use the functions without configuration (alternative to making all
+     * methods static).
      */
     static #static: BoilerFiles;
 
     /**
-     * @member st  Use the functions without configuration.
-     * @static
+     * Use the functions without configuration.
      */
     public static get st(): BoilerFiles {
 
@@ -69,24 +75,16 @@ class BoilerFiles extends AbstractCore<BoilerFilesOpts> {
 
 
 
-    /** # LOCAL
+    /** LOCAL
      ** ==================================================================== **/
 
-    /** 
-     * @member _defaultOpts  
-     * @protected
-     * @override
-     */
     public override get optsDefault(): BoilerFilesOpts {
 
-        let opts: BoilerFilesOpts = {
+        const opts: BoilerFilesOpts = {
             ...AbstractCoreOptsDefault,
+
             prettyPrint: true,
-            jest: {
-                default: {
-                    coverageDirectory: 'tests/results/coverage',
-                },
-            },
+
             tsConfig: {
                 default: {
                     compilerOptions: {
@@ -219,18 +217,56 @@ class BoilerFiles extends AbstractCore<BoilerFilesOpts> {
                 },
             },
         };
-
-        if ( typeof opts.tsConfig.default.compilerOptions === 'undefined' ) {
-            opts.tsConfig.default.compilerOptions = {};
-        }
-        opts.tsConfig.default.compilerOptions.pretty = opts.prettyPrint;
-
         return opts;
     }
 
     /**
-     * CONSTRUCTOR
+     * New version of this obj’s opts with given overrides.
      */
+    protected override _getOpts( opts: Partial<BoilerFilesOpts> ): BoilerFilesOpts {
+
+        let resultOpts: BoilerFilesOpts = super._getOpts( opts );
+
+        if ( opts.tsConfig && opts.tsConfig.default ) {
+
+            resultOpts.tsConfig.default = this.mergeArgs(
+                resultOpts.tsConfig.default,
+                opts.tsConfig.default,
+                true
+            );
+        }
+
+        if ( typeof resultOpts.tsConfig.default.compilerOptions == 'undefined' ) {
+            resultOpts.tsConfig.default.compilerOptions = {};
+        }
+        resultOpts.tsConfig.default.compilerOptions.pretty = opts.tsConfig?.default?.compilerOptions?.pretty ?? resultOpts.prettyPrint;
+
+        if ( opts.tsConfig && opts.tsConfig.presets ) {
+
+            const presetKeys = Object.keys(
+                resultOpts.tsConfig.presets
+            ) as ( keyof BoilerFilesOpts[ 'tsConfig' ][ 'presets' ] )[];
+
+            for ( const key of presetKeys ) {
+
+                if ( opts.tsConfig.presets[ key ] ) {
+
+                    resultOpts.tsConfig.presets[ key ] = this.mergeArgs(
+                        resultOpts.tsConfig.presets[ key ],
+                        opts.tsConfig.presets[ key ],
+                        true
+                    );
+                }
+            }
+        }
+
+        return resultOpts;
+    }
+
+
+    /** CONSTRUCTOR
+     ** ==================================================================== **/
+
     constructor (
         opts: Partial<BoilerFilesOpts> = {},
     ) {
@@ -239,25 +275,10 @@ class BoilerFiles extends AbstractCore<BoilerFilesOpts> {
 
 
 
-    /** # TSCONFIG.JSON
+    /** TSCONFIG.JSON
      ** ==================================================================== **/
 
     /**
-     * @method jest
-     * 
-     * @param config  Optional. Overriding configuration values. Default {}.
-     * 
-     * @return  Valid JSON object to use for a jest.config.json file.
-     */
-    public jest(
-        config: Partial<JestConfig> = {},
-    ): JestConfig {
-        return this.mergeArgs( this.opts.jest.default, config, true );
-    }
-
-    /**
-     * @method tsConfig
-     * 
      * @param config  Optional. Overriding configuration values. Default {}.
      * @param preset  Optional. A preset configuation to use. True or false 
      *                values relate to the default/universl preset values, other 
@@ -301,17 +322,3 @@ class BoilerFiles extends AbstractCore<BoilerFilesOpts> {
         );
     }
 }
-
-
-/** 
- * EXPORT
- */
-
-export type {
-    BoilerFileMethodKey,
-    BoilerFilesOpts,
-};
-
-export {
-    BoilerFiles,
-};

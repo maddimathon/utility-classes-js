@@ -3,7 +3,7 @@
     "Insert @since to docblock": {
         "scope": "javascript,typescript",
         "prefix": "@since",
-        "body": "@since {{PKG_VERSION}}"
+        "body": "@since 1.0.0"
     },
 
     "Add full project header": {
@@ -19,7 +19,7 @@
             " * ",
             " * @license MIT",
             " * ",
-            " * @since {{PKG_VERSION}}",
+            " * @since 1.0.0",
             " */",
             "/*!",
             " * @package @maddimathon/utility-classes@{{CURRENT_VERSION}}",
@@ -38,10 +38,10 @@
             "/**",
             " * ${2:This file does stuff.}",
             " * ",
-            " * @package @maddimathon/utility-classes@{{CURRENT_VERSION}}",
+            " * @package @maddimathon/utility-classes",
             " * @license MIT",
             " * ",
-            " * @since {{PKG_VERSION}}",
+            " * @since 1.0.0",
             " */",
             "// import argsFn from 'minimist';",
             "// const args = argsFn( process.argv.slice( 2 ) );",

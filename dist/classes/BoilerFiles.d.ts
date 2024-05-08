@@ -1,17 +1,14 @@
 /*!
- * @package @maddimathon/utility-classes@{{CURRENT_VERSION}}
- * @link {{CURRENT_URL}}
+ * @package @maddimathon/utility-classes@1.0.0
+ * @link https://github.com/maddimathon/utility-classes-js
  * @license MIT
  */
-import type { Config as JestConfig } from 'jest';
 import type { AbstractCoreOpts } from './abstracts/AbstractCore.js';
 import { AbstractCore } from './abstracts/AbstractCore.js';
 import type { TsConfig } from '../types/jsonSchemas.js';
-interface BoilerFilesOpts extends AbstractCoreOpts {
+export type BoilerFileMethodKey = keyof BoilerFiles & ( "tsConfig" );
+export interface BoilerFilesOpts extends AbstractCoreOpts {
     prettyPrint: boolean;
-    jest: {
-        default: JestConfig;
-    };
     tsConfig: {
         default: Partial<TsConfig>;
         presets: {
@@ -22,14 +19,11 @@ interface BoilerFilesOpts extends AbstractCoreOpts {
         };
     };
 }
-type BoilerFileMethodKey = keyof BoilerFiles & ("jest" | "tsConfig");
-declare class BoilerFiles extends AbstractCore<BoilerFilesOpts> {
+export declare class BoilerFiles extends AbstractCore<BoilerFilesOpts> {
     #private;
     static get st(): BoilerFiles;
     get optsDefault(): BoilerFilesOpts;
-    constructor(opts?: Partial<BoilerFilesOpts>);
-    jest(config?: Partial<JestConfig>): JestConfig;
-    tsConfig(config?: Partial<TsConfig>, preset?: boolean | keyof BoilerFilesOpts['tsConfig']['presets']): TsConfig;
+    protected _getOpts( opts: Partial<BoilerFilesOpts> ): BoilerFilesOpts;
+    constructor ( opts?: Partial<BoilerFilesOpts> );
+    tsConfig( config?: Partial<TsConfig>, preset?: boolean | keyof BoilerFilesOpts[ 'tsConfig' ][ 'presets' ] ): TsConfig;
 }
-export type { BoilerFileMethodKey, BoilerFilesOpts, };
-export { BoilerFiles, };

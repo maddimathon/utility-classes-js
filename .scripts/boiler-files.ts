@@ -3,10 +3,10 @@
 /**
  * Writes boiler files for this project.
  * 
- * @package @maddimathon/utility-classes@{{CURRENT_VERSION}}
+ * @package @maddimathon/utility-classes
  * @license MIT
  * 
- * @since {{PKG_VERSION}}
+ * @since 1.0.0
  */
 // import argsFn from 'minimist';
 // const args = argsFn( process.argv.slice( 2 ) );
@@ -18,33 +18,19 @@ import NodePath from 'node:path';
 
 // import pkg from '../package.json';
 
-import { BoilerFiles } from '../src/index.js';
+import { NodeFunctions } from '../src/index.js';
 
-const BF: BoilerFiles = new BoilerFiles();
-
-
-/**
- * jest
- */
-NodeFS.writeFileSync(
-    NodePath.resolve( 'jest.config.json' ),
-    JSON.stringify( BF.jest( {} ), null, 4 ),
-    { encoding: 'utf-8', }
-);
+const NF: NodeFunctions = new NodeFunctions();
 
 
 /**
  * tsconfig
  */
-NodeFS.writeFileSync(
-    NodePath.resolve( 'tsconfig.json' ),
-    JSON.stringify( BF.tsConfig( {
-        include: [
-            'src/**/*.ts',
-        ],
-        compilerOptions: {
-            outDir: './dist',
-        },
-    }, 'node' ), null, 4 ),
-    { encoding: 'utf-8', }
-);
+NF.writeBoilerFile( 'tsconfig.json', 'tsConfig', {
+    include: [
+        'src/**/*.ts',
+    ],
+    compilerOptions: {
+        outDir: './dist',
+    },
+}, 'node' );
